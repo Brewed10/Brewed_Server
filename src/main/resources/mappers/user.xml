@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.cafe.model.dao.UserDao">
+	<insert id="insert" parameterType="User">
+INSERT INTO t_user
+    (id, 
+    name, 
+    pass)
+VALUES
+    (#{id}, 
+    #{name}, 
+    #{pass})
+	</insert>
+	
+	<update id="update" parameterType="User">
+	UPDATE t_user
+	SET
+    token = #{token}
+	WHERE id = #{id}
+	</update>
+	
+	<update id="updateUserStamp" parameterType="User">
+	UPDATE t_user
+	SET
+    stamps = #{stamps}
+	WHERE id = #{id}
+	</update>
+
+	
+	<delete id="delete" parameterType="string">
+		DELETE FROM t_user
+		WHERE id = #{id}
+	</delete>
+	<select id="select" parameterType="string" resultType="User">
+		SELECT * FROM t_user
+		WHERE id = #{id}
+	</select>
+	<select id="selectAll" resultType="User">
+		SELECT * FROM t_user
+	</select>
+	
+	<select id="selectUserToken" resultType="string">
+		SELECT token from t_user
+	</select>
+	
+	<select id="selectUserNoti" resultType="map" parameterType="string">
+		SELECT * from t_noti
+		WHERE user_id = #{userId}
+	</select>
+	
+	<insert id="insertNoti" parameterType="Noti">
+	insert into t_noti (n_msg, user_id) values (#{nMsg}, #{userId})
+	</insert>
+	
+	<delete id="deleteNoti" parameterType="int">
+	delete from t_noti
+	where n_id = #{nId}
+	</delete>
+	
+	<select id="selectUser" parameterType="string" resultType="User">
+	select * from t_user where id = #{id}
+	</select>
+	
+	<select id="selectWithCommentUserName" parameterType="int" resultType="string">
+	select u.name
+	from t_user u join t_comment c
+	on u.id = c.user_id
+	where product_id = #{productId};
+	</select>
+	
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.ssafy.cafe.model.dao.AdminDao">
+	
+	<select id="select" parameterType="String" resultType="Admin">
+		SELECT * FROM t_admin
+		WHERE a_id = #{aId}
+	</select>
+	
+	<update id="update" parameterType="Admin">
+		UPDATE t_admin
+		SET a_token = #{aToken}
+		WHERE a_id = #{aId}
+	</update>
+	
+	<select id="selectAdmin" parameterType="String" resultType="Map">
+		SELECT a_token FROM t_admin
+		WHERE s_id = #{sId}
+	</select>
+</mapper>

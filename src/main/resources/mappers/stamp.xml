@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- name space는 BookRepo의 fully qualified name으로 설정한다. -->
+<mapper namespace="com.ssafy.cafe.model.dao.StampDao">
+	<insert id="insert" parameterType="Stamp">
+		INSERT INTO t_stamp
+		(user_id,
+		order_id,
+		quantity)
+		VALUES
+		(#{userId},
+		#{orderId},
+		#{quantity})
+	</insert>
+
+
+	<select id="select" parameterType="int" resultType="Stamp">
+		SELECT * FROM
+		t_stamp
+		WHERE id = #{id}
+	</select>
+	<select id="selectAll" resultType="string" parameterType="string">
+		SELECT stamps
+		FROM t_user
+        where id = #{userId}
+	</select>
+
+	<select id="selectByUserId" resultType="map"
+		parameterType="string">
+		SELECT u.id, s.order_id, s.quantity, c.c_id, c.c_value
+		FROM t_stamp s, t_coupon c, t_user u
+		where u.id=#{userId} 
+		and u.id = s.user_id
+		and u.id = c.user_id
+		group by c_id
+		order by u.id desc
+	</select>
+
+	<resultMap type="Stamp" id="StampBasic">
+		<id column="id" property="id" />
+		<result column="order_id" property="orderId" />
+		<result column="user_id" property="userId" />
+		<result column="quantity" property="quantity" />
+	</resultMap>
+	
+	<update id="updateStamp" parameterType="Stamp">
+	update t_stamp
+	set quantity = #{quantity}
+	where user_id = #{userId}
+	</update>
+	
+	<insert id="insertCoupon" parameterType="Coupon">
+	insert into t_coupon (c_value, user_id) values (#{cValue}, #{userId})
+	</insert>
+	
+	<delete id="deleteCoupon" parameterType="int">
+	delete from t_coupon
+	where c_id = #{cId}
+	</delete>
+</mapper>
